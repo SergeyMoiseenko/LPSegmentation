@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include <tchar.h>
-
+#include <opencv2/core.hpp>
 
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
