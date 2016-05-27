@@ -151,23 +151,33 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlgorithmTester.h" />
     <ClInclude Include="FMPoint.h" />
     <ClInclude Include="FMPointComparator.h" />
     <ClInclude Include="FMUtils.h" />
+    <ClInclude Include="ImageMarkup.h" />
+    <ClInclude Include="LPSUtils.h" />
     <ClInclude Include="QuadraticCoefficients.h" />
+    <ClInclude Include="SegmentationEvaluation.h" />
+    <ClInclude Include="SegmentMetric.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestedAlgorithm.h" />
     <ClInclude Include="TestFastMarching.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AlgorithmTester.cpp" />
     <ClCompile Include="FastMarchingAlgorithm.cpp" />
     <ClCompile Include="FMPoint.cpp" />
     <ClCompile Include="FMPointComparator.cpp" />
     <ClCompile Include="FMUtils.cpp" />
     <ClCompile Include="FunctionOfSpeed.cpp" />
+    <ClCompile Include="ImageMarkup.cpp" />
     <ClCompile Include="LPSegmentation.cpp" />
+    <ClCompile Include="LPSUtils.cpp" />
     <ClCompile Include="QuadraticCoefficients.cpp" />
+    <ClCompile Include="SegmentationEvaluation.cpp" />
+    <ClCompile Include="SegmentMetric.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="TestFastMarching.cpp" />
   </ItemGroup>

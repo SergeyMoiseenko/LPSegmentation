@@ -68,10 +68,6 @@ void TestFastMarching::preProcessing(Mat & img)
 	Mat bilateral_input = img.clone();
 	bilateralFilter(bilateral_input, img, 5, 9, 9);
 
-	namedWindow("Before Gradient", CV_WINDOW_AUTOSIZE);
-	imshow("Before Gradient", img);
-	waitKey(0);
-	destroyAllWindows();
 	//----------------------------------------------------------------------------
 	Mat grad_x, grad_y;
 	Mat abs_grad_x, abs_grad_y;
@@ -85,9 +81,4 @@ void TestFastMarching::preProcessing(Mat & img)
 	convertScaleAbs(grad_y, abs_grad_y);
 
 	addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, img);
-
-	namedWindow("Gradient", CV_WINDOW_AUTOSIZE);
-	imshow("Gradient", img);
-	waitKey(0);
-	destroyAllWindows();
 }

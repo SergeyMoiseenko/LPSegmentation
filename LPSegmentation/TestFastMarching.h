@@ -11,8 +11,6 @@ public:
 	vector<Rect> doSegmentation(Mat &image);
 
 private:
-	FastMarchingAlgorithm<uchar> fm;
-
 	void preProcessing(Mat &img);
 	
 };

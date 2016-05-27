@@ -28,6 +28,7 @@ public:
 	void doFastMarching();
 	Mat getTimeMat();
 	vector<Rect> getBoundaryRectangles();
+	
 
 private:
 	Mat binContours;
@@ -36,7 +37,8 @@ private:
 
 	set<FMPoint*, FMPointComparator> frontPoints;
 	vector<Rect> boundaryRectangles;
-	FMPoint *points;
+	FMPoint * points;
+	
 
 	FunctionOfSpeed<T> speed;
 	double maxTime;
