@@ -35,30 +35,9 @@ void TestFastMarching::preProcessing(Mat & img)
 {
 	int imgSize = img.rows*img.cols;
 	cvtColor(img, img, CV_BGR2GRAY);
-
+	
 	// contrast correction
-	Scalar m, stdDev;
-	meanStdDev(img, m, stdDev);
-	if (stdDev[0] <= 40) {
-		for (int r = 0; r < img.rows; r++) {
-			for (int c = 0; c < img.cols; c++) {
-				uchar p = img.at<uchar>(r, c);
-				double delta = (p*1.) - m[0];
-				double scale = abs(delta / stdDev[0]);
-				scale = (scale > 1) ? 1 : scale;
-				uchar rez;
-				if (delta < 0) {
-					scale = 1 - scale;
-					rez = scale * 127;
-				}
-				else {
-					rez = 127 + scale * 127;
-				}
-
-				img.at<uchar>(r, c) = rez;
-			}
-		}
-	}
+	contrastCorrection(img);
 
 	// Медианный фильтр
 	medianBlur(img, img, 5);
@@ -67,11 +46,10 @@ void TestFastMarching::preProcessing(Mat & img)
 	// Билатеральная фильтрация
 	Mat bilateral_input = img.clone();
 	bilateralFilter(bilateral_input, img, 5, 9, 9);
-
 	//----------------------------------------------------------------------------
 	Mat grad_x, grad_y;
 	Mat abs_grad_x, abs_grad_y;
-	//
+
 	//// Gradient X
 	Sobel(img, grad_x, CV_16S, 1, 0, 3, 1, 0, BORDER_DEFAULT);
 	convertScaleAbs(grad_x, abs_grad_x);

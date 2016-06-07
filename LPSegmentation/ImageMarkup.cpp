@@ -21,7 +21,6 @@ int ImageMarkup::mark()
 	bool answered = false;
 	while (!answered) {
 		char key = waitKey(250);
-		cout << "key: " << (int)key << endl;
 		switch (key)
 		{
 		case KEY_NEXT_ARROW:

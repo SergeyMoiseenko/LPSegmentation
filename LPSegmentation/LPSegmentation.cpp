@@ -11,16 +11,42 @@ using namespace cv;
 
 void runSegmentationAlgTest(string path );
 void markupImages(string path);
+void segmentImages(string path);
 bool readImage(string path, Mat & out);
+int help();
 
 
 
-int main()
+int main(int argc, char** argv)
 {
-	string path = "D:\\LPImages\\testMarkup";
+	string command = argv[1];
+	if (argc == 2 && command == "help") { return help(); }
+	string path = argv[2];
+	if (command == "markup") {
+		markupImages(path);
+		return 0;
+	}
+	if (command == "test") {
+		runSegmentationAlgTest(path);
+		return 0;
+	}
+	if (command == "segment") {
+		segmentImages(path);
+		return 0;
+	}
+	cout << "Неверная команда";
+	return 0;
+	//string path = "D:\\LPImages\\testMarkup";
 	//markupImages(path);
-	runSegmentationAlgTest(path);
-    return 0;
+	//runSegmentationAlgTest(path);
+}
+
+int help()
+{
+	cout << "1. команда 'markup <path>' - начнет разметку всех изображений находящихся в <path>" << endl;
+	cout << "2. команда 'test <path>' - начнет тестирование алгоритма сегментации на всех изображениях, нахожящихся в пути <path>" << endl;
+	cout << "3. команда 'segment <path>' - начнет сегментацию всех изображений находящихся в <path>" << endl;
+	return 0;
 }
 
 void runSegmentationAlgTest(string path)
@@ -28,7 +54,7 @@ void runSegmentationAlgTest(string path)
 	list<string> imageFiles = getFileList(path, "*.jpg", false);
 
 	if (imageFiles.size() == 0) {
-		cout << "There are no images in this folder" << endl;
+		cout << "Нет изображений в этой папке." << endl;
 		return;
 	}
 
@@ -37,7 +63,9 @@ void runSegmentationAlgTest(string path)
 	
 	for (auto it = imageFiles.begin(); it != imageFiles.end(); it++) {
 		Mat img;
-		readImage(*it, img);
+		if (!readImage(*it, img)) {
+			continue;
+		}
 		string name = getFileName(&(*it));
 		string xmlFileName = path + "\\" + name + ".xml";
 		vector<Rect> correctRects = readRectsFromXML(xmlFileName);
@@ -55,14 +83,14 @@ void runSegmentationAlgTest(string path)
 		string segmentedImageName = path + "\\" + name + "_segm" + ".jpg";
 		imwrite(segmentedImageName, img);
 
-		cout << "name: " << name << endl;
-		cout  << "    " << "all segments: " << eval.getNumberOfFoundSegments() << endl;
-		cout << "    " << "correct found segments: " << eval.getNumberOfCorrectFoundSegments() << endl;
-		cout << "    " << "true number of segments: " << eval.getTrueNumberOfSegments() << endl;
+		cout << "Имя: " << name << endl;
+		cout  << "    " << "все сегменты: " << eval.getNumberOfFoundSegments() << endl;
+		cout << "    " << "корректно найденные сегменты: " << eval.getNumberOfCorrectFoundSegments() << endl;
+		cout << "    " << "правильное количество сегментов: " << eval.getTrueNumberOfSegments() << endl;
 		cout << endl;
 	}
 
-
+	cout << "Выполнено!" << endl;
 }
 
 void markupImages(string path)
@@ -70,7 +98,7 @@ void markupImages(string path)
 	list<string> imageFiles = getFileList(path, "*.jpg", false);
 
 	if (imageFiles.size() == 0) {
-		cout << "There are no images in this folder" << endl;
+		cout << "Нет изображений в этой папке." << endl;
 		return;
 	}
 
@@ -81,7 +109,7 @@ void markupImages(string path)
 		Mat img;
 
 		if (filesIterator == imageFiles.end()) {
-			cout << "Done!" << endl;
+			cout << "Выполнено!" << endl;
 			break;
 		}
 
@@ -109,10 +137,48 @@ void markupImages(string path)
 	} while (nextAction != RESULT_CLOSE);
 }
 
+void segmentImages(string path)
+{
+	list<string> imageFiles = getFileList(path, "*.jpg", false);
+
+	if (imageFiles.size() == 0) {
+		cout << "Нет изображений в этой папке." << endl;
+		return;
+	}
+
+	TestFastMarching tfm;	
+
+	for (auto it = imageFiles.begin(); it != imageFiles.end(); it++) {
+		Mat img;
+
+		if (!readImage(*it, img)) {
+			continue;
+		}
+
+		string name = getFileName(&(*it));
+
+		vector<Rect> rectangles = tfm.doSegmentation(img);
+
+		for (int i = 0; i < rectangles.size(); i++) {
+			Mat segment = img(rectangles.at(i));
+			string segmentedImageName = path + "\\" + name + "_segm_" + to_string(i) + ".jpg";
+			imwrite(segmentedImageName, segment);
+		}
+
+		for (int i = 0; i < rectangles.size(); i++) {
+			rectangle(img, rectangles.at(i), Scalar(0, 255, 0));
+		}
+
+		imwrite(path + "\\" + name + "_segmented.jpg", img);
+	}
+
+	cout << "Выполнено!" << endl;
+}
+
 bool readImage(string path, Mat & out) {
 	Mat img = imread(path, CV_LOAD_IMAGE_COLOR);
 	if (!img.data) {
-		cout << "Can't load image" << endl;
+		cout << "Не могу загрузить изображение." << endl;
 		return false;
 	}
 	out = img;

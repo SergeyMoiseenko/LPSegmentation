@@ -221,7 +221,7 @@ void FastMarchingAlgorithm<T>::increaseCoefficients(QuadraticCoefficients & coef
 template<typename T>
 void FastMarchingAlgorithm<T>::initializePoints()
 {
-	this->frontPoints = set<FMPoint*, FMPointComparator >(FMPointComparator());
+	this->frontPoints = set<FMPoint*, FMPointComparator>(FMPointComparator());
 
 	int points_length = rows*cols;
 	this->points = new FMPoint[points_length];

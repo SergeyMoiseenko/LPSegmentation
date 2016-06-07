@@ -28,7 +28,7 @@ SegmentationEvaluation AlgorithmTester::evaluateSegmentationResult(vector<Rect> 
 			if (sr.tp != 0) {
 				double tpAlgPercent = (sr.tp * 1.0) / (sr.tp + sr.fp);
 				double tpCorrectPercent = (sr.tp * 1.0) / (sr.tp + sr.fn);
-				if (tpAlgPercent > 0.75 && tpCorrectPercent > 0.85) {
+				if (tpAlgPercent > 0.65 && tpCorrectPercent > 0.75) {
 					correctFoundSegmentMetrics.push_back(sr);
 					correctFoundSegments.push_back(algSegm[j]);
 					break;

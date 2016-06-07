@@ -15,7 +15,6 @@ public:
 	void setAlpha(double _alpha);
 private:
 	cv::Mat *gradient;
-	cv::Mat *laplacian;
 	double beta;
 	double alpha;
 };
